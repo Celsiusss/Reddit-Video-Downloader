@@ -1,19 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 
 class Download extends StatelessWidget {
   TextEditingController urlController;
   Function downloadVideo;
 
-  Stream<bool> isDownloading;
   StreamController<bool> isDownloadingController;
+  Stream<bool> isDownloading = new Stream.value(false);
 
   Download({@required this.urlController, @required this.downloadVideo}) {
     isDownloadingController = new StreamController();
-    isDownloading = isDownloadingController.stream;
     isDownloadingController.add(false);
+    isDownloading = isDownloadingController.stream;
   }
 
   startDownload() async {

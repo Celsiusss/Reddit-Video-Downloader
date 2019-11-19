@@ -61,7 +61,7 @@ class Home extends StatelessWidget {
       var status = permissions[PermissionGroup.storage];
 
       if (status != PermissionStatus.granted) {
-        openDialog('Insifficent permissions', 'We need the storage permission to be able to save your video.');
+        openDialog('Insufficient permissions', 'We need the storage permission to be able to save your video.');
         debugPrint('access denied');
         return;
       }
@@ -93,7 +93,7 @@ class Home extends StatelessWidget {
       debugPrint(result);
       openDialog('Success', 'Your video was downloaded.');
     } else {
-      debugPrint('faulure');
+      debugPrint('failure');
       debugPrint(code.toString());
       openDialog('Failure', 'Something happened when downloading the video.');
     }
