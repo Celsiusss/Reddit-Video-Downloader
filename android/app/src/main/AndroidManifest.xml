@@ -13,7 +13,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Reddit Video Downloader"
+        android:label="Video Downloader for Reddit"
         android:icon="@mipmap/icon">
         <activity
             android:name=".MainActivity"

@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
-        title: 'Reddit Video Downloader',
+        title: 'Video Downloader for Reddit',
         theme: ThemeData(
             brightness: Brightness.light,
             backgroundColor: Colors.white,
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title: Text('Reddit Video Downloader'),
+              title: Text('Video Downloader for Reddit'),
               backgroundColor: Colors.white,
               textTheme: TextTheme(
                 title: TextStyle(color: Colors.black),
