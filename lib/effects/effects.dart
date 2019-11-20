@@ -14,21 +14,28 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:http/http.dart' as http;
 
 Future<String> _getDash(String redditUrl) async {
-  if (!redditUrl.endsWith('/')) {
-    redditUrl += '/';
-  }
-  redditUrl += '.json';
 
-  Future<String> fetch() async {
+  Future<String> fetch(String url) async {
+    if (!redditUrl.endsWith('/')) {
+      redditUrl += '/';
+    }
+    redditUrl += '.json';
+
     try {
       final response = await http.get(redditUrl);
+      debugPrint(response.statusCode.toString());
+      if (response.statusCode == 302) {
+        debugPrint('Location: ' + response.headers['Location']);
+        return await fetch(response.headers['Location']);
+      }
+
       return response.body;
     } catch (e) {
       return '{}';
     }
   }
 
-  dynamic data = jsonDecode(await fetch());
+  dynamic data = jsonDecode(await fetch(redditUrl));
 
   try {
     String dashUrl = data[0]['data']['children'][0]['data']['secure_media']

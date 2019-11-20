@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reddit_video_downloader/actions/actions.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:reddit_video_downloader/models/app_state.dart';
 
 class Download extends StatelessWidget {
+  static const platform = const MethodChannel('app.channel.shared.data');
   TextEditingController urlController;
 
-  Download({@required this.urlController});
+  Download({@required this.urlController}) {
+    getSharedText();
+  }
+
+  getSharedText() async {
+    var sharedData = await platform.invokeMethod("getSharedText");
+    if (sharedData != null) {
+      urlController.text = sharedData;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +53,7 @@ class Download extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
-                          child: RaisedButton(
+                          child: FlatButton(
                             padding: EdgeInsets.all(15),
                             child: Container(
                               width: 120,

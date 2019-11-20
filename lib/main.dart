@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit_video_downloader/effects/effects.dart';
 import 'package:reddit_video_downloader/models/app_state.dart';
@@ -31,16 +32,31 @@ class MyApp extends StatelessWidget {
         title: 'Reddit Video Downloader',
         theme: ThemeData(
             brightness: Brightness.light,
+            backgroundColor: Colors.white,
             primaryColor: Colors.indigoAccent,
             textTheme: TextTheme(
               headline: TextStyle(fontSize: 21),
             ),
             buttonTheme: ButtonThemeData(
-                buttonColor: Colors.indigoAccent,
-                textTheme: ButtonTextTheme.primary)),
+                buttonColor: Colors.white,
+                textTheme: ButtonTextTheme.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                  side: BorderSide(color: Colors.blue)
+                ),
+            ),
+            appBarTheme: AppBarTheme(
+              color: Colors.white,
+            )),
         home: Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
               title: Text('Reddit Video Downloader'),
+              backgroundColor: Colors.white,
+              textTheme: TextTheme(
+                title: TextStyle(color: Colors.black),
+              ),
+              elevation: 0,
             ),
             body: Home()),
       ),
