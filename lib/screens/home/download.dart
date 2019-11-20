@@ -1,28 +1,22 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:reddit_video_downloader/actions/actions.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:reddit_video_downloader/models/app_state.dart';
 
 class Download extends StatelessWidget {
   TextEditingController urlController;
-  Function downloadVideo;
 
-  StreamController<bool> isDownloadingController;
-  Stream<bool> isDownloading = new Stream.value(false);
-
-  Download({@required this.urlController, @required this.downloadVideo}) {
-    isDownloadingController = new StreamController();
-    isDownloadingController.add(false);
-    isDownloading = isDownloadingController.stream;
-  }
-
-  startDownload() async {
-    isDownloadingController.add(true);
-    await downloadVideo();
-    isDownloadingController.add(false);
-  }
+  Download({@required this.urlController});
 
   @override
   Widget build(BuildContext context) {
+    void startDownload() {
+      StoreProvider.of<AppState>(context)
+          .dispatch(new StartDownloadAction(urlController.text, context));
+      urlController.clear();
+    }
+
     return Column(
       children: <Widget>[
         Card(
@@ -31,10 +25,10 @@ class Download extends StatelessWidget {
           child: Container(
               padding: const EdgeInsets.all(24),
               alignment: Alignment.center,
-              child: StreamBuilder<bool>(
-                  stream: isDownloading,
-                  builder: (context, snapshot) {
-                    if (!snapshot.data) {
+              child: StoreConnector<AppState, bool>(
+                  converter: (store) => store.state.download.isDownloading,
+                  builder: (context, isDownloading) {
+                    if (!isDownloading) {
                       return Column(children: <Widget>[
                         Text(
                           'Download Video',
@@ -63,7 +57,7 @@ class Download extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            onPressed: startDownload,
+                            onPressed: () => startDownload(),
                           ),
                         ),
                       ]);
@@ -80,8 +74,11 @@ class Download extends StatelessWidget {
 class Downloading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[Text('Downloading...')],
+    return StoreConnector<AppState, String>(
+      converter: (Store<AppState> store) => store.state.download.status,
+      builder: (context, String status) => Column(
+        children: <Widget>[Text(status)],
+      ),
     );
   }
 }
