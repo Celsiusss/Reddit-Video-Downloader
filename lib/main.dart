@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.white,
             primaryColor: Colors.indigoAccent,
             textTheme: TextTheme(
-              headline: TextStyle(fontSize: 21),
+              headline5: TextStyle(fontSize: 21),
             ),
             buttonTheme: ButtonThemeData(
                 buttonColor: Colors.white,
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
               title: Text('Video Downloader for Reddit'),
               backgroundColor: Colors.white,
               textTheme: TextTheme(
-                title: TextStyle(color: Colors.black),
+                headline6: TextStyle(color: Colors.black),
               ),
               elevation: 0,
             ),

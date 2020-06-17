@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit_video_downloader/screens/home/download.dart';
 
 class Home extends StatelessWidget {
-  TextEditingController urlController = new TextEditingController();
+  final TextEditingController urlController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {

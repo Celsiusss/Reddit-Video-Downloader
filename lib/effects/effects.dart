@@ -10,16 +10,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:reddit_video_downloader/actions/actions.dart';
 import 'package:reddit_video_downloader/models/app_state.dart';
+import 'package:reddit_video_downloader/utils.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:http/http.dart' as http;
 
 Future<String> _getDash(String redditUrl) async {
 
   Future<String> fetch(String url) async {
-    if (!redditUrl.endsWith('/')) {
-      redditUrl += '/';
-    }
-    redditUrl += '.json';
+    redditUrl = Utils.parseThreadUrl(url);
 
     try {
       final response = await http.get(redditUrl);
@@ -35,15 +33,48 @@ Future<String> _getDash(String redditUrl) async {
     }
   }
 
-  dynamic data = jsonDecode(await fetch(redditUrl));
+  RedditUrls urlType = Utils.getUrlType(redditUrl);
 
-  try {
-    String dashUrl = data[0]['data']['children'][0]['data']['secure_media']
+  switch (urlType) {
+
+    case RedditUrls.THREAD:
+      dynamic data = jsonDecode(await fetch(redditUrl));
+
+      try {
+        String dashUrl = data[0]['data']['children'][0]['data']['secure_media']
         ['reddit_video']['dash_url'];
-    return dashUrl;
-  } catch (e) {
-    return null;
+        return dashUrl;
+      } catch (e) {
+        return null;
+      }
+      break;
+    case RedditUrls.VIDEO:
+    case RedditUrls.VIDEO2:
+      String threadUrl = await Utils.getThreadUrlFromVideoUrl(redditUrl);
+      if (threadUrl == null) {
+        return null;
+      }
+
+      String jsonData = await fetch(threadUrl);
+      debugPrint('final url ' + threadUrl);
+      debugPrint(jsonData);
+      dynamic data = jsonDecode(jsonData);
+
+      try {
+        String dashUrl = data[0]['data']['children'][0]['data']['secure_media']
+        ['reddit_video']['dash_url'];
+        return dashUrl;
+      } catch (e) {
+        return null;
+      }
+      break;
+    case RedditUrls.INVALID:
+      return null;
+      break;
   }
+
+
+
 }
 
 Stream<dynamic> _startDownload(
@@ -92,7 +123,7 @@ Stream<dynamic> _startDownload(
     String dashUrl = await _getDash(url);
     if (dashUrl == null) {
       openDialog(
-          'Failure', 'Something happened when getting the video information.');
+          'Failure', 'The URL might be invalid.');
       return new StopDownloadAction();
     }
 
