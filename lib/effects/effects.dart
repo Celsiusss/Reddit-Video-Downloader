@@ -16,6 +16,8 @@ import 'package:http/http.dart' as http;
 
 Future<String> _getDash(String redditUrl) async {
 
+  redditUrl = Utils.removeQueryParams(redditUrl);
+
   Future<String> fetch(String url) async {
     redditUrl = Utils.parseThreadUrl(url);
 
@@ -34,7 +36,6 @@ Future<String> _getDash(String redditUrl) async {
   }
 
   RedditUrls urlType = Utils.getUrlType(redditUrl);
-
   switch (urlType) {
 
     case RedditUrls.THREAD:
@@ -67,6 +68,9 @@ Future<String> _getDash(String redditUrl) async {
       } catch (e) {
         return null;
       }
+      break;
+    case RedditUrls.DASH:
+      return redditUrl;
       break;
     case RedditUrls.INVALID:
       return null;
@@ -131,6 +135,7 @@ Stream<dynamic> _startDownload(
 
     updateStatus('Initializiging ffmpeg');
     final FlutterFFmpeg ffmpeg = new FlutterFFmpeg();
+    final FlutterFFmpegConfig ffmpegConfig = new FlutterFFmpegConfig();
     final Directory directory = await getTemporaryDirectory();
 
     String path = directory.path;
@@ -140,8 +145,9 @@ Stream<dynamic> _startDownload(
     debugPrint('Path: ' + path);
     updateStatus('Running ffmpeg');
 
-    ffmpeg.disableLogs();
-    ffmpeg.enableStatisticsCallback((int time,
+    ffmpegConfig.resetStatistics();
+    ffmpegConfig.disableLogs();
+    ffmpegConfig.enableStatisticsCallback((int time,
         int size,
         double bitrate,
         double speed,
@@ -159,9 +165,10 @@ Stream<dynamic> _startDownload(
       debugPrint('saving to $path/$fileName');
 
       final result = await ImageGallerySaver.saveFile('$path/$fileName');
+      new File('$path/$fileName').delete();
       debugPrint(result);
       updateStatus('Success');
-      openDialog('Success', 'Your video was downloaded.');
+      openDialog('Success', 'Your video was downloaded.\nSaved to gallery.');
       return new StopDownloadAction();
     } else {
       debugPrint('failure');

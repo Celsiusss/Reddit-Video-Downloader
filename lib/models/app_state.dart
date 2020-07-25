@@ -8,7 +8,7 @@ class AppState {
   AppState({this.download = const Download()});
 
   factory AppState.initial() => AppState(
-      download: new Download(isDownloading: false, status: 'Not downloading'));
+      download: new Download(isDownloading: false, status: ''));
 
   AppState copyWith({Download download}) {
     return AppState(download: download ?? this.download);
