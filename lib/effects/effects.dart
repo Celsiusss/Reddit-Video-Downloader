@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:image_gallery/image_gallery.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -64,6 +65,9 @@ Stream<dynamic> _startDownload(
     debugPrint('download');
     updateStatus('Starting download');
     String url = action.url;
+
+    var images = await FlutterGallaryPlugin.getAllImages;
+    debugPrint(images.toString());
 
     if (url.isEmpty) {
       openDialog('Failure', 'Empty URL.');

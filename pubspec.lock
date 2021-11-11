@@ -116,6 +116,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.9"
+  image_gallery:
+    dependency: "direct main"
+    description:
+      name: image_gallery
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   image_gallery_saver:
     dependency: "direct main"
     description:
@@ -150,7 +157,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.2"
+    version: "1.4.4"
   pedantic:
     dependency: transitive
     description:

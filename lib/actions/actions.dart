@@ -46,3 +46,18 @@ class OpenDialogAction {
     return 'OpenDialogAction{title: $title, body: $body}';
   }
 }
+
+class SwitchTabAction {
+  final int tabNumber;
+
+  SwitchTabAction({this.tabNumber});
+
+  @override
+  String toString() {
+    return 'SwitchTab{tabNumber: $tabNumber}';
+  }
+}
+
+class LoadGallery {
+
+}

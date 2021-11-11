@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:reddit_video_downloader/effects/effects.dart';
 import 'package:reddit_video_downloader/models/app_state.dart';
 import 'package:reddit_video_downloader/reduers/app_state_reducer.dart';
-import 'package:reddit_video_downloader/screens/home/home.dart';
+import 'package:reddit_video_downloader/home.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
+
+enum TabItem { download, videos }
 
 var _epicMiddleware = new EpicMiddleware(epic);
 
@@ -38,27 +40,16 @@ class MyApp extends StatelessWidget {
               headline: TextStyle(fontSize: 21),
             ),
             buttonTheme: ButtonThemeData(
-                buttonColor: Colors.white,
-                textTheme: ButtonTextTheme.primary,
-                shape: RoundedRectangleBorder(
+              buttonColor: Colors.white,
+              textTheme: ButtonTextTheme.primary,
+              shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
-                  side: BorderSide(color: Colors.blue)
-                ),
+                  side: BorderSide(color: Colors.blue)),
             ),
             appBarTheme: AppBarTheme(
               color: Colors.white,
             )),
-        home: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              title: Text('Video Downloader for Reddit'),
-              backgroundColor: Colors.white,
-              textTheme: TextTheme(
-                title: TextStyle(color: Colors.black),
-              ),
-              elevation: 0,
-            ),
-            body: Home()),
+        home: Home()
       ),
     );
   }
